@@ -1,0 +1,9 @@
+[package]
+name = "virting-ublk-drbd-demo"
+version = "0.1.0"
+edition = "2024"
+description = "Standalone Rust MVP for a DRBD-like replicated block device intended to grow into a ublk target."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/larry-xue/virting-ublk-drbd-demo"
+
+[dependencies]
