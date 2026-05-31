@@ -27,7 +27,7 @@ jobs:
           cp target/release/virting-ublk-drbd-demo "dist/${name}/"
           cp README.md LICENSE-MIT LICENSE-APACHE "dist/${name}/"
           tar -C dist -czf "dist/${name}.tar.gz" "${name}"
-          sha256sum "dist/${name}.tar.gz" > "dist/${name}.tar.gz.sha256"
+          (cd dist && sha256sum "${name}.tar.gz" > "${name}.tar.gz.sha256")
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}

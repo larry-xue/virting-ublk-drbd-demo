@@ -73,8 +73,8 @@ Linux x86_64 release binary, packages it with the README and license files, and
 uploads both the tarball and its `sha256` file.
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+git tag vX.Y.Z
+git push origin vX.Y.Z
 ```
 
 ## Manual Two-Daemon Demo
