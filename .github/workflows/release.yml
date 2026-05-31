@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release-linux-x86_64:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo fmt --check
+      - run: cargo test
+      - run: cargo clippy -- -D warnings
+      - run: cargo build --release
+      - name: Package Linux x86_64 artifact
+        run: |
+          set -euxo pipefail
+          version="${GITHUB_REF_NAME}"
+          name="virting-ublk-drbd-demo-${version}-linux-x86_64"
+          mkdir -p "dist/${name}"
+          cp target/release/virting-ublk-drbd-demo "dist/${name}/"
+          cp README.md LICENSE-MIT LICENSE-APACHE "dist/${name}/"
+          tar -C dist -czf "dist/${name}.tar.gz" "${name}"
+          sha256sum "dist/${name}.tar.gz" > "dist/${name}.tar.gz.sha256"
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euxo pipefail
+          gh release create "${GITHUB_REF_NAME}" \
+            dist/*.tar.gz \
+            dist/*.sha256 \
+            --title "${GITHUB_REF_NAME}" \
+            --generate-notes
